@@ -1,8 +1,10 @@
 
-/// A protocol for resolving dependencies by type.
 public protocol DependencyResolver {
-    
-    func resolve<T>() -> T
-    
-    func resolve<T>(_ t: T.Type) -> T
+    func resolve<C>() -> C
+    func tryResolve<C>() -> C?
+}
+
+public extension DependencyResolver {
+    func resolve<C>(_ : C.Type) -> C { resolve() }
+    func tryResolve<C>(_ : C.Type) -> C? { tryResolve() }
 }
