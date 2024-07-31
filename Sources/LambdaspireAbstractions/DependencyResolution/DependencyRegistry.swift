@@ -1,12 +1,35 @@
 
-/// A protocol for registering dependencies.
 public protocol DependencyRegistry {
+    
+    func transient<I>(_ : @escaping () -> I)
+    func transient<I>(_ : @escaping (DependencyResolutionScope) -> I)
+    func transient<C>(_ : C.Type, _ : @escaping () -> C)
+    func transient<C>(_ : C.Type, _ : @escaping (DependencyResolutionScope) -> C)
+    func transient<C, I>(_ : C.Type, _ : Assigned<C, I>)
+    func transient<I: Resolvable>(_ : I.Type)
+    func transient<C, I: Resolvable>(_ : C.Type, _ : Assigned<C, I>)
+    
+    func singleton<I>(_ : @escaping () -> I)
+    func singleton<I>(_ : @escaping (DependencyResolutionScope) -> I)
+    func singleton<C>(_ : C.Type, _ : @escaping () -> C)
+    func singleton<C>(_ : C.Type, _ : @escaping (DependencyResolutionScope) -> C)
+    func singleton<C, I>(_ : C.Type, _ : Assigned<C, I>)
+    func singleton<I: Resolvable>(_ : I.Type)
+    func singleton<C, I: Resolvable>(_ : C.Type, _ : Assigned<C, I>)
+    
+    func scoped<I>(_ : @escaping () -> I)
+    func scoped<I>(_ : @escaping (DependencyResolutionScope) -> I)
+    func scoped<C>(_ : C.Type, _ : @escaping () -> C)
+    func scoped<C>(_ : C.Type, _ : @escaping (DependencyResolutionScope) -> C)
+    func scoped<C, I>(_ : C.Type, _ : Assigned<C, I>)
+    func scoped<I: Resolvable>(_ : I.Type)
+    func scoped<C, I: Resolvable>(_ : C.Type, _ : Assigned<C, I>)
+}
 
-    func register<T>(_ singleton: T)
-    
-    func register<T>(_ type: T.Type, _ singleton: T)
-    
-    func register<T>(_ factory: @escaping () -> T)
-    
-    func register<T>(_ type: T.Type, _ factory: @escaping () -> T)
+public typealias Assigned<C, I> = (I.Type) -> C
+
+public func assigned<C>(_ : C.Type) -> Assigned<C, C> {
+    { _ in
+        fatalError("Do not invoke. Compile-time hack only.")
+    }
 }
