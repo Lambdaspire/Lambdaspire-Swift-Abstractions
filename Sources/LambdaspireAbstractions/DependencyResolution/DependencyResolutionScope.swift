@@ -2,6 +2,7 @@
 public protocol DependencyResolutionScope : DependencyResolver {
     var id: String { get }
     func scope() -> DependencyResolutionScope
+    func scope(build: (DependencyRegistry) -> Void) -> any DependencyResolutionScope
 }
 
 public extension DependencyResolutionScope {
